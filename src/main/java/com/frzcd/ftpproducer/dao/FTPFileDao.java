@@ -1,7 +1,9 @@
 package com.frzcd.ftpproducer.dao;
 
-public interface FTPFileDao {
-    public boolean contains(String string);
+import com.frzcd.ftpproducer.domain.MyFile;
 
-    public boolean add(String string);
+public interface FTPFileDao {
+    public boolean contains(String fileInfo);
+
+    public boolean add(MyFile myFile);
 }
