@@ -31,9 +31,4 @@ public class LogMessages {
     public static final String FTP_FILE_READER_ERROR_7 = "[FTP-E007] [FTP_FILE_READER] Cannot retrieve file {}";
     public static final String FTP_FILE_SENDER_ERROR_8 = "[FTP-E008] [FTP_FILE_SENDER] Data sending error: {}";
     public static final String FTP_FILE_PARSER_ERROR_9 = "[FTP-E009] [FTP_FILE_PARSER] Cannot parse directory {}";
-
-
-
-
-
 }
