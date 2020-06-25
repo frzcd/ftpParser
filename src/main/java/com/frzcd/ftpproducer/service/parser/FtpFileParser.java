@@ -45,13 +45,17 @@ public class FtpFileParser implements Parser {
         for (String startingDirectory : directories) {
             log.info(FTP_FILE_PARSER_INFO_10, startingDirectory);
 
-            try {
-                scanDirectory(ftp.printWorkingDirectory());
-            } catch (IOException e) {
-                log.error(FTP_FILE_PARSER_ERROR_9, startingDirectory);
-                e.printStackTrace();
+            if (ftp.changeWorkingDirectory(startingDirectory)) {
+                try {
+                    scanDirectory(ftp.printWorkingDirectory());
+                } catch (IOException e) {
+                    log.error(FTP_FILE_PARSER_ERROR_9, startingDirectory);
+                    e.printStackTrace();
+                }
+            } else {
+                log.info(FTP_FILE_PARSER_INFO_20);
             }
-            
+
         }
         log.info(FTP_FILE_PARSER_INFO_19);
     }

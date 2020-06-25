@@ -2,7 +2,7 @@ package com.frzcd.ftpproducer.utils;
 
 public class LogMessages {
 
-    public static final String FTP_SERVER_CONFIG_INFO_1 = "[FTP-I001] [FTP_SERVER_CONFIG] Trying to connect to FTP";
+    public static final String FTP_SERVER_CONFIG_INFO_1 = "[FTP-I001] [FTP_SERVER_CONFIG] Trying to connect to FTP {}";
     public static final String FTP_SERVER_CONFIG_INFO_2 = "[FTP-I002] [FTP_SERVER_CONFIG] FTP Server reply: {}";
     public static final String FTP_SERVER_CONFIG_INFO_3 = "[FTP-I003] [FTP_SERVER_CONFIG] FTP server connection established";
     public static final String KAFKA_PRODUCER_CONFIG_INFO_4 = "[FTP-I004] [KAFKA_PRODUCER_CONFIG] KafkaServer connection established";
@@ -21,6 +21,7 @@ public class LogMessages {
     public static final String FTP_FILE_SENDER_INFO_17 = "[FTP-I017] [FTP_FILE_SENDER] Trying to send file {}";
     public static final String FTP_FILE_SENDER_INFO_18 = "[FTP-I018] [FTP_FILE_SENDER] File {} successfully sent";
     public static final String FTP_FILE_PARSER_INFO_19 = "[FTP-I019] [FTP_PARSER] Scanning all starting directories completed";
+    public static final String FTP_FILE_PARSER_INFO_20 = "[FTP-I020] [FTP_PARSER] No such starting directory";
 
     public static final String FTP_SERVER_CONFIG_ERROR_1 = "[FTP-E001] [FTP_SERVER_CONFIG] Ftp connection failed. Server reply code: {}. Shutting down application";
     public static final String FTP_SERVER_CONFIG_ERROR_2 = "[FTP-E002] [KAFKA_PRODUCER] Failed to connect to ftp server";

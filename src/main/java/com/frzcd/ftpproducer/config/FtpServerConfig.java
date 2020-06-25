@@ -26,7 +26,7 @@ public class FtpServerConfig {
 
     @Bean
     public FTPClient ftp() {
-        log.info(FTP_SERVER_CONFIG_INFO_1);
+        log.info(FTP_SERVER_CONFIG_INFO_1, server);
 
         FTPClient ftp = new FTPClient();
 

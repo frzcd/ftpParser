@@ -1,7 +1,6 @@
 package com.frzcd.ftpproducer.service.sender;
 
 import com.frzcd.ftpproducer.domain.MyFile;
-import com.frzcd.ftpproducer.service.sender.Sender;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.utils.Bytes;
 import org.springframework.kafka.core.KafkaTemplate;

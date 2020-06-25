@@ -1,7 +1,6 @@
 package com.frzcd.ftpproducer.service.reader;
 
 import com.frzcd.ftpproducer.domain.MyFile;
-import com.frzcd.ftpproducer.service.reader.Reader;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
