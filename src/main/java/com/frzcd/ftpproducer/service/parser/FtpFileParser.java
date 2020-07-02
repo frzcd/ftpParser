@@ -2,6 +2,8 @@ package com.frzcd.ftpproducer.service.parser;
 
 import com.frzcd.ftpproducer.dao.FTPFileDao;
 import com.frzcd.ftpproducer.domain.MyFile;
+import com.frzcd.ftpproducer.domain.MyXmlFile;
+import com.frzcd.ftpproducer.service.lastUpdateChecker.LastUpdateChecker;
 import com.frzcd.ftpproducer.service.reader.Reader;
 import com.frzcd.ftpproducer.service.sender.Sender;
 import lombok.SneakyThrows;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.List;
 
 import static com.frzcd.ftpproducer.utils.LogMessages.*;
 
@@ -21,6 +24,7 @@ public class FtpFileParser implements Parser {
     private Sender sender;
     private Reader reader;
     private FTPClient ftp;
+    private LastUpdateChecker lastUpdateChecker;
 
     private FTPFileDao dao;
     private String[] directories;
@@ -29,11 +33,13 @@ public class FtpFileParser implements Parser {
                          Reader reader,
                          FTPClient ftp,
                          FTPFileDao dao,
+                         LastUpdateChecker lastUpdateChecker,
                          @Value("${ftp.directories}")String[] directories) {
         this.sender = sender;
         this.reader = reader;
         this.ftp = ftp;
         this.dao = dao;
+        this.lastUpdateChecker = lastUpdateChecker;
         this.directories = directories;
 
         log.info(FTP_FILE_PARSER_INFO_9);
@@ -45,29 +51,40 @@ public class FtpFileParser implements Parser {
         for (String startingDirectory : directories) {
             log.info(FTP_FILE_PARSER_INFO_10, startingDirectory);
 
-            if (ftp.changeWorkingDirectory(startingDirectory)) {
-                try {
-                    scanDirectory(ftp.printWorkingDirectory());
-                } catch (IOException e) {
-                    log.error(FTP_FILE_PARSER_ERROR_9, startingDirectory);
-                    e.printStackTrace();
-                }
-            } else {
-                log.info(FTP_FILE_PARSER_INFO_20);
-            }
+            scanDirectory(startingDirectory);
+
+//            if (ftp.changeWorkingDirectory(startingDirectory)) {
+//                try {
+//                    log.warn("WTF {}", ftp.printWorkingDirectory());
+//                    scanDirectory(startingDirectory);
+//
+//                } catch (IOException e) {
+//                    log.error(FTP_FILE_PARSER_ERROR_9, startingDirectory);
+//                    e.printStackTrace();
+//                }
+//            } else {
+//                log.info(FTP_FILE_PARSER_INFO_20);
+//            }
 
         }
         log.info(FTP_FILE_PARSER_INFO_19);
     }
 
-    private void scanDirectory(String directoryToScan) throws IOException {
+    private synchronized void scanDirectory(String directoryToScan) throws IOException {
         log.info(FTP_FILE_PARSER_INFO_11, directoryToScan);
+
         ftp.changeWorkingDirectory(directoryToScan);
 
         FTPFile[] files = ftp.listFiles();
 
         if (files.length > 0) {
             for (FTPFile file : files) {
+
+                ftp.changeWorkingDirectory(directoryToScan);
+
+                if (!lastUpdateChecker.isFtpFileUpdateTimeValid(file)) {
+                    continue;
+                }
 
                 if (file.isFile()) {
                     String fileFullName = ftp.printWorkingDirectory() + "/" + file.getName();
@@ -77,8 +94,11 @@ public class FtpFileParser implements Parser {
                         MyFile incomeFile = reader.readFile(file, ftp);
 
                         if (incomeFile == null) {
+                            log.info("income file == null");
                             continue;
                         }
+
+                        log.info("income file is: {}. list size: {}", incomeFile.getFileInfo(), incomeFile.getXmlFilesList().size());
 
                         sender.send(incomeFile);
                         dao.add(incomeFile);

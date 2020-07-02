@@ -22,6 +22,7 @@ public class LogMessages {
     public static final String FTP_FILE_SENDER_INFO_18 = "[FTP-I018] [FTP_FILE_SENDER] File {} successfully sent";
     public static final String FTP_FILE_PARSER_INFO_19 = "[FTP-I019] [FTP_PARSER] Scanning all starting directories completed";
     public static final String FTP_FILE_PARSER_INFO_20 = "[FTP-I020] [FTP_PARSER] No such starting directory";
+    public static final String LAST_UPDATE_CHECKER_IMPL_21 = "[FTP-I021] [LAST_UPDATE_CHECKER_IMPL] Last update date: {}";
 
     public static final String FTP_SERVER_CONFIG_ERROR_1 = "[FTP-E001] [FTP_SERVER_CONFIG] Ftp connection failed. Server reply code: {}. Shutting down application";
     public static final String FTP_SERVER_CONFIG_ERROR_2 = "[FTP-E002] [KAFKA_PRODUCER] Failed to connect to ftp server";

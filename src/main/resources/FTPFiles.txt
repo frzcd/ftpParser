@@ -1,0 +1,17 @@
+
+/fns/TEST/frz/daily-packages/2020/01/1.tar.gz 1593446100000
+/fns/TEST/frz/daily-packages/2020/01/13.tar.gz 1593458760000
+/fns/TEST/frz/daily-packages/2020/01/2.tar.gz 1593447300000
+/fns/TEST/frz/daily-packages/2020/01/3.tar.gz 1593447300000
+/fns/TEST/frz/daily-packages/2020/01/4.tar.gz 1593447300000
+/fns/TEST/frz/daily-packages/2020/01/5.tar.gz 1593447300000
+/fns/TEST/frz/daily-packages/2020/02/0002/14.tar.gz 1593459480000
+/fns/TEST/frz/daily-packages/2020/02/0002/15.tar.gz 1593459720000
+/fns/TEST/frz/daily-packages/2020/02/6.tar.gz 1593449880000
+/fns/TEST/frz/daily-packages/2020/02/7.tar.gz 1593449880000
+/fns/TEST/frz/daily-packages/2020/02/8.tar.gz 1593449880000
+/fns/TEST/frz/daily-packages/2020/02/9.tar.gz 1593449880000
+/fns/TEST/frz/daily-packages/2020/03/11.tar.gz 1593458280000
+/fns/TEST/frz/daily-packages/2020/04/10.tar.gz 1593454740000
+/fns/TEST/frz/daily-packages/2020/04/12.tar.gz 1593458640000
+/fns/TEST/frz/daily-packages/2020/04/16.tar.gz 1593459780000
