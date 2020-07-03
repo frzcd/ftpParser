@@ -1,10 +1,10 @@
 package com.frzcd.ftpproducer.config;
 
+import com.frzcd.ftpproducer.config.properties.FtpProperties;
 import com.frzcd.ftpproducer.exceptions.MyFtpConnectionException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -15,14 +15,17 @@ import static com.frzcd.ftpproducer.utils.LogMessages.*;
 @Slf4j
 @Configuration
 public class FtpServerConfig {
-    @Value("${ftp.server}")
-    String server;
-    @Value("${ftp.port}")
-    int port;
-    @Value("${ftp.user}")
-    String user;
-    @Value("${ftp.password}")
-    String pass;
+    private final String server;
+    private final int port;
+    private final String user;
+    private final String pass;
+
+    public FtpServerConfig(FtpProperties ftpProperties) {
+        this.server = ftpProperties.getServer();
+        this.port = ftpProperties.getPort();
+        this.user = ftpProperties.getUser();
+        this.pass = ftpProperties.getPassword();
+    }
 
     @Bean
     public FTPClient ftp() {

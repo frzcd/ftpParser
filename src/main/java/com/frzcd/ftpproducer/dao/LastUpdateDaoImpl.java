@@ -1,8 +1,8 @@
 package com.frzcd.ftpproducer.dao;
 
-import com.frzcd.ftpproducer.exceptions.MyCannotCreateLastUpdateFileException;
+import com.frzcd.ftpproducer.config.properties.AppProperties;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.io.*;
@@ -10,23 +10,27 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Scanner;
 
+import static com.frzcd.ftpproducer.utils.LogMessages.*;
+
 @Slf4j
 @Repository
 public class LastUpdateDaoImpl implements LastUpdateDao {
 
-    String lastUpdateFileName;
+    private final String lastUpdateFileName;
 
-    public LastUpdateDaoImpl(@Value("${lastUpdate-file}")String lastUpdateFileName) {
-        this.lastUpdateFileName = lastUpdateFileName;
+    @Autowired
+    public LastUpdateDaoImpl(AppProperties appProperties) {
+        this.lastUpdateFileName = appProperties.getLastUpdateFile();
 
         if(!new File(lastUpdateFileName).exists()) {
-            log.info("LastUpdateFile {} is not exists. Creating new File.", lastUpdateFileName);
+            log.info(LAST_UPDATE_DAO_IMPL_INFO_23, lastUpdateFileName);
 
             try {
                 Files.createFile(Paths.get(lastUpdateFileName));
             } catch (IOException e) {
+                log.error(LAST_UPDATE_DAO_IMPL_ERROR_16);
                 e.printStackTrace();
-                throw new MyCannotCreateLastUpdateFileException();
+                //throw new MyCannotCreateLastUpdateFileException();
             }
 
         }
@@ -47,7 +51,7 @@ public class LastUpdateDaoImpl implements LastUpdateDao {
 
             scanner.close();
         } catch (FileNotFoundException e) {
-            log.error("Last update save file is not found");
+            log.error(LAST_UPDATE_DAO_IMPL_ERROR_17);
             e.printStackTrace();
         }
 
@@ -65,7 +69,7 @@ public class LastUpdateDaoImpl implements LastUpdateDao {
             bufferedWriter.write(String.valueOf(lastUpdateMillis));
             bufferedWriter.flush();
         } catch (IOException e) {
-            log.error("date is not saved");
+            log.error(LAST_UPDATE_DAO_IMPL_ERROR_18);
             e.printStackTrace();
         }
     }

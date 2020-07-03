@@ -1,8 +1,6 @@
 package com.frzcd.ftpproducer.config;
 
-import com.frzcd.ftpproducer.domain.MyFile;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.kafka.common.utils.Bytes;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

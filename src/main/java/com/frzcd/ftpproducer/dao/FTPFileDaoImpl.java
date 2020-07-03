@@ -1,13 +1,15 @@
 package com.frzcd.ftpproducer.dao;
 
+import com.frzcd.ftpproducer.config.properties.AppProperties;
 import com.frzcd.ftpproducer.domain.MyFile;
 import com.frzcd.ftpproducer.exceptions.MyCannotCreateSaveFileException;
 import com.frzcd.ftpproducer.exceptions.MyCannotOpenSaveFileException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
@@ -17,11 +19,12 @@ import static com.frzcd.ftpproducer.utils.LogMessages.*;
 @Slf4j
 @Repository
 public class FTPFileDaoImpl implements FTPFileDao {
-    Set<String> proceedFiles;
-    @Value("${save-file}")
-    String saveFileName;
+    private final Set<String> proceedFiles;
+    private final String saveFileName;
 
-    public FTPFileDaoImpl(@Value("${save-file}")String saveFileName) {
+    @Autowired
+    public FTPFileDaoImpl(AppProperties appProperties) {
+        saveFileName = appProperties.getSaveFile();
         log.info(FTP_FILE_DAO_IMPL_INFO_5, saveFileName);
         File saveFile = new File(saveFileName);
         proceedFiles = new HashSet<>();
@@ -29,8 +32,7 @@ public class FTPFileDaoImpl implements FTPFileDao {
         if (!saveFile.exists()) {
 
             try {
-                saveFile.createNewFile();
-                log.info(FTP_FILE_DAO_IMPL_INFO_6, saveFileName);
+                Files.createFile(saveFile.toPath());
             } catch (IOException e) {
                 log.error(FTP_FILE_DAO_IMPL_ERROR_4);
                 e.printStackTrace();

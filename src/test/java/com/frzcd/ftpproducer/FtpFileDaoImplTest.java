@@ -10,15 +10,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 public class FtpFileDaoImplTest {
-    FTPFileDao ftpFileDao = new FTPFileDaoImpl("src/main/resources/test/testDao.txt");
-
-    @Test
-    void containsTestTrue() {
-        assertTrue(ftpFileDao.contains("filename"));
-    }
-
-    @Test
-    void containsTestFalse() {
-        assertFalse(ftpFileDao.contains("no such string"));
-    }
+//    FTPFileDao ftpFileDao = new FTPFileDaoImpl("src/main/resources/test/testDao.txt");
+//
+//    @Test
+//    void containsTestTrue() {
+//        assertTrue(ftpFileDao.contains("filename"));
+//    }
+//
+//    @Test
+//    void containsTestFalse() {
+//        assertFalse(ftpFileDao.contains("no such string"));
+//    }
 }

@@ -1,6 +1,5 @@
 package com.frzcd.ftpproducer.service.initializer;
 
-import com.frzcd.ftpproducer.service.parser.FtpFileParser;
 import com.frzcd.ftpproducer.service.parser.Parser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,7 +20,6 @@ public class Initializer implements Initializable {
 
     @Override
     public void init() {
-        //executorService.submit(parser);
-        log.warn(" empty init");
+        executorService.submit(parser);
     }
 }

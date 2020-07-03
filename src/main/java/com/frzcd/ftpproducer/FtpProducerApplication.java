@@ -9,20 +9,22 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.util.List;
 
 @Slf4j
-@SpringBootApplication
+@EnableScheduling
 @AllArgsConstructor
+@SpringBootApplication
 public class FtpProducerApplication implements ApplicationRunner {
 
 	private final List<Initializable> initializableList;
 
-	@KafkaListener(topics="${topics}")
+	@KafkaListener(topics="${kafka.topic}")
 	public void testListener(ConsumerRecord<String, String> record) {
-		log.info("record.partition: " + record.partition());
-		log.info("record.key: " + record.key());
+//		log.info("record.partition: " + record.partition());
+//		log.info("record.key: " + record.key());
 //		System.out.println(record.value());
 	}
 

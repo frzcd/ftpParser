@@ -13,7 +13,7 @@ import static com.frzcd.ftpproducer.utils.LogMessages.LAST_UPDATE_CHECKER_IMPL_2
 @Slf4j
 @Service
 public class LastUpdateCheckerImpl implements LastUpdateChecker {
-    private LastUpdateDao lastUpdateDao;
+    private final LastUpdateDao lastUpdateDao;
     private long lastUpdate;
 
     @Autowired

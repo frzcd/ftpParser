@@ -1,9 +1,9 @@
 package com.frzcd.ftpproducer.service.sender;
 
+import com.frzcd.ftpproducer.config.properties.KafkaProperties;
 import com.frzcd.ftpproducer.domain.MyFile;
 import com.frzcd.ftpproducer.domain.MyXmlFile;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.kafka.common.utils.Bytes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
@@ -18,32 +18,30 @@ import static com.frzcd.ftpproducer.utils.LogMessages.*;
 @Slf4j
 @Service
 public class FtpFileSender implements Sender {
-    private KafkaTemplate<String, String> kafkaTemplateStrings;
+    private final KafkaTemplate<String, String> kafkaTemplateStrings;
+    private final KafkaProperties kafkaProperties;
 
     @Autowired
-    public FtpFileSender(KafkaTemplate<String, String> kafkaTemplateStrings) {
+    public FtpFileSender(KafkaTemplate<String, String> kafkaTemplateStrings, KafkaProperties kafkaProperties) {
         this.kafkaTemplateStrings = kafkaTemplateStrings;
+        this.kafkaProperties = kafkaProperties;
         log.info(FTP_FILE_SENDER_INFO_16);
     }
 
     public void send(MyFile myFile) {
         String name = myFile.getFullFileName();
 
-        int xmlsSand = 0;
-
         for (MyXmlFile xmlFile : myFile.getXmlFilesList()) {
-            xmlsSand++;
-
-            log.info("{} trying to send", xmlsSand);
 
             try {
-                Thread.sleep(2);
+                Thread.sleep(1);
             } catch (InterruptedException e) {
+                log.error(FTP_FILE_SENDER_ERROR_10);
                 e.printStackTrace();
             }
 
             ListenableFuture<SendResult<String, String>> future =
-                    kafkaTemplateStrings.send("test", name + " " + xmlsSand, xmlFile.getData());
+                    kafkaTemplateStrings.send(kafkaProperties.getTopic(), name, xmlFile.getData());
 
             future.addCallback(new ListenableFutureCallback<SendResult<String, String>>() {
 
@@ -55,15 +53,9 @@ public class FtpFileSender implements Sender {
 
                 @Override
                 public void onSuccess(SendResult<String, String> stringStringSendResult) {
-                    log.info(FTP_FILE_SENDER_INFO_18, name);
+                    //log.info(FTP_FILE_SENDER_INFO_18, name);
                 }
             });
         }
-        log.info("SENT");
-    }
-
-    @PostConstruct
-    public void testSend() {
-        kafkaTemplateStrings.send("test", "Some test message sand from SenderImpl");
     }
 }

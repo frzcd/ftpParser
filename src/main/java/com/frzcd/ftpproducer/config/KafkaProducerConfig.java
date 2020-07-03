@@ -1,11 +1,12 @@
 package com.frzcd.ftpproducer.config;
 
+import com.frzcd.ftpproducer.config.properties.KafkaProperties;
 import com.frzcd.ftpproducer.exceptions.MyKafkaServerConnectionException;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.admin.KafkaAdminClient;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
@@ -21,49 +22,21 @@ import static com.frzcd.ftpproducer.utils.LogMessages.KAFKA_SERVER_CONFIG_ERROR_
 
 @Slf4j
 @Configuration
+@AllArgsConstructor
 public class KafkaProducerConfig {
 
-    @Value("${spring.kafka.bootstrap-servers}")
-    private String kafkaServer;
-
-//    @Bean
-//    public KafkaTemplate<String, Bytes> kafkaTemplateBytes() {
-//        return new KafkaTemplate<>(producerFactoryBytes());
-//    }
+    private final KafkaProperties kafkaProperties;
 
     @Bean
     public KafkaTemplate<String, String> kafkaTemplateStrings() {
         return new KafkaTemplate<>(producerFactoryStrings());
     }
 
-//    @Bean
-//    ProducerFactory<String, Bytes> producerFactoryBytes() {
-//        checkKafkaServerConnection(producerConfigsBytes());
-//        return new DefaultKafkaProducerFactory<>(producerConfigsBytes());
-//    }
-
     @Bean
     ProducerFactory<String, String> producerFactoryStrings() {
-        checkKafkaServerConnection(producerConfigsStrings());
+        checkKafkaServerConnection();
         return new DefaultKafkaProducerFactory<>(producerConfigsStrings());
     }
-
-//    @Bean
-//    public Map<String, Object> producerConfigsBytes() {
-//        Map<String, Object> props = new HashMap<>();
-//
-//        props.put(
-//                ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
-//                kafkaServer);
-//        props.put(
-//                ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
-//                StringSerializer.class);
-//        props.put(
-//                ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
-//                BytesSerializer.class);
-//
-//        return props;
-//    }
 
     @Bean
     public Map<String, Object> producerConfigsStrings() {
@@ -71,7 +44,7 @@ public class KafkaProducerConfig {
 
         props.put(
                 ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
-                kafkaServer);
+                kafkaProperties.getBootstrapServer());
         props.put(
                 ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
                 StringSerializer.class);
@@ -80,12 +53,12 @@ public class KafkaProducerConfig {
                 StringSerializer.class);
         props.put(
                 ProducerConfig.MAX_REQUEST_SIZE_CONFIG,
-                4000000);
+                kafkaProperties.getMaxRequestSizeConfig());
 
         return props;
     }
 
-    private void checkKafkaServerConnection(Map<String, Object> props) {
+    private void checkKafkaServerConnection() {
         try {
             System.out.println(KafkaAdminClient.create(producerConfigsStrings()).listTopics().listings().get());
             log.info(KAFKA_PRODUCER_CONFIG_INFO_4);
